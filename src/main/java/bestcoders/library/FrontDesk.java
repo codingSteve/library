@@ -28,4 +28,8 @@ public class FrontDesk {
 	return checkoutSuccessful;
     }
 
+    public boolean returnItem(final Member m, final Item b) {
+	return false;
+    }
+
 }
