@@ -22,7 +22,14 @@ public class Library {
 
     private final Collection<LoanRecord> loans = new ArrayList<LoanRecord>();
 
-    private final Inventory inventory = new Inventory();
+    private final Inventory inventory;
+
+    private final BusinessDate businessDate;
+
+    public Library(final BusinessDate businessDate, final Inventory inventory) {
+	this.businessDate = businessDate;
+	this.inventory = inventory;
+    }
 
     public boolean addInventoryItem(final Item item, final int quantity) {
 	inventory.addToInventory(item, quantity);
@@ -80,6 +87,11 @@ public class Library {
 	logger.info("About to search for item with id of {}", i);
 	return inventory.getFullCatalogue().stream().filter(ii -> ii.getItem().getId() == i).limit(1l)
 		.map(InventoryItem::getItem).findFirst();
+    }
+
+    public Collection<LoanRecord> getOverdueItems(final LibraryMember m) {
+	return loans.stream().filter(lr -> lr.expectedReturnDate.compareTo(businessDate) < 0)
+		.collect(Collectors.toList());
     }
 
     public int getStockAvailable(final Item i) {

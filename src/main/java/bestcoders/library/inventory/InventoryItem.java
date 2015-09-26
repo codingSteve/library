@@ -32,20 +32,12 @@ public class InventoryItem {
 	return item;
     }
 
-    public BusinessDate getPurchaseDate() {
-	return purchaseDate;
-    }
-
     public int getQuantity() {
 	return quantity;
     }
 
     public BusinessDate getRetirementDate() {
 	return retirementDate;
-    }
-
-    public void setRetirementDate(final BusinessDate retirementDate) {
-	this.retirementDate = retirementDate;
     }
 
 }

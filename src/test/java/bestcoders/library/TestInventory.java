@@ -1,11 +1,13 @@
 package bestcoders.library;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 
@@ -51,6 +53,20 @@ public class TestInventory {
 	final int expectedResult = 2;
 
 	assertEquals(expectedResult, actualResult);
+
+    }
+
+    @Test
+    public void testInventoryIdLookupWithUnownedBook() {
+
+	final Library library = LibraryFactory.getLibrary();
+
+	final Item unownedBook = new Item(-1, "Voynich manuscript", ItemType.BOOK);
+
+	final Optional<Item> rareBook = library.getItemById(unownedBook.getId());
+	final boolean inStock = rareBook.isPresent();
+
+	assertFalse(inStock);
 
     }
 
