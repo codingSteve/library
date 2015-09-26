@@ -8,7 +8,8 @@ public class TestReturn {
 
     @Test
     public void testReturn() {
-	final Member m = new LibraryMember();
+
+	final Member m = new LibraryMember(1, "Steve");
 	final FrontDesk d = Library.frontDesk();
 
 	final Item b = d.findItemById(1);
@@ -23,7 +24,7 @@ public class TestReturn {
 
     @Test
     public void testReturnWithNoCheckout() {
-	final Member m = new LibraryMember();
+	final Member m = new LibraryMember(1, "Steve");
 	final FrontDesk d = Library.frontDesk();
 
 	final Item b = d.findItemById(1);

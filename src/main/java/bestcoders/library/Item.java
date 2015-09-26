@@ -1,9 +1,17 @@
 package bestcoders.library;
 
-public interface Item {
+public abstract class Item {
 
-	String getTitle();
-	ItemType getType();
-	int getId();
-	
+    abstract int getId();
+
+    abstract String getTitle();
+
+    abstract ItemType getType();
+
+    @Override
+    public String toString() {
+	return "{" + "id : " + getId() + ", " + "title : \"" + getTitle() + "\", " + "type : " + getType() + "}";
+
+    }
+
 }
