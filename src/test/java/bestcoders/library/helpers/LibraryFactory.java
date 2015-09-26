@@ -24,6 +24,9 @@ public class LibraryFactory {
 	final Item lotr = new Item(2, "The lord of the rings", ItemType.BOOK);
 	library.addInventoryItem(lotr, 3);
 
+	final Item fellowship = new Item(10, "The lord of the rings: the fellowship of the ring", ItemType.DVD);
+	library.addInventoryItem(fellowship, 9);
+
 	return library;
 
     }

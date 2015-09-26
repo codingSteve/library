@@ -43,23 +43,32 @@ public class Library {
     }
 
     public boolean checkout(final Item i, final LibraryMember m) {
-	logger.debug("About to add new loan record for item {} to member {}", i, m);
-	addLoanRecord(i, m);
-	return true;
+
+	final boolean isAvailable = (0 < getStockAvailable(i, m));
+
+	if (isAvailable) {
+	    logger.debug("About to add new loan record for item {} to member {}", i, m);
+	    addLoanRecord(i, m);
+	}
+
+	return isAvailable;
     }
 
-    public Collection<Item> getAvailableItems(final Collection<ItemType> roles) {
+    /**
+     *
+     * @param member
+     * @return the items available for loan to the member
+     */
+    public Collection<Item> getAvailableItems(final LibraryMember member) {
+
+	final Collection<ItemType> roles = member.getPermittedItemTypes();
+
 	logger.info("About to prepare available items for {}", roles);
-	final Stream<LoanRecord> openLoans = loans.stream().filter(lr -> lr.getState() == LoanState.OPEN);
+	final Stream<LoanRecord> openLoans = getOpenLoansStream();
 	final Map<Item, Long> onLoan = openLoans
 		.collect(Collectors.groupingBy(LoanRecord::getItem, Collectors.counting()));
 
-	final Collection<InventoryItem> fullCatalogue = inventory.getFullCatalogue();
-
-	final Stream<InventoryItem> authorizedItems = fullCatalogue.stream().filter(invItem -> {
-	    final ItemType itemType = invItem.getItem().getType();
-	    return roles.contains(itemType);
-	});
+	final Stream<InventoryItem> authorizedItems = getPermittedItemsStreamByMember(member);
 
 	final Map<Item, Integer> authorizedItemsSummary = authorizedItems.collect(Collectors
 		.groupingBy(InventoryItem::getItem, Collectors.reducing(0, InventoryItem::getQuantity, Integer::sum)));
@@ -113,12 +122,17 @@ public class Library {
 	return getOverdueItemsStream().filter(lr -> lr.getMember().equals(m));
     }
 
-    public int getStockAvailable(final Item i) {
+    private Stream<InventoryItem> getPermittedItemsStreamByMember(final LibraryMember m) {
+	return inventory.getFullCatalogue().stream()
+		.filter(invItem -> m.getPermittedItemTypes().contains(invItem.getItem().getType()));
+    }
+
+    public int getStockAvailable(final Item i, final LibraryMember m) {
 	logger.info("About to check for availability of {}", i);
 
 	final int copiesAvailable;
-	final Optional<InventoryItem> totalInventory = inventory.getFullCatalogue().stream()
-		.filter(invItem -> invItem.getItem().equals(i)).limit(1).findAny();
+	final Optional<InventoryItem> totalInventory = getPermittedItemsStreamByMember(m)
+		.filter(invItem -> invItem.getItem().equals(i)).findAny();
 
 	if (totalInventory.isPresent()) {
 	    final InventoryItem ii = totalInventory.get();

@@ -3,15 +3,8 @@ package bestcoders.library.frontdesk;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import bestcoders.library.BusinessDate;
-import bestcoders.library.Library;
 import bestcoders.library.LoanRecord;
-import bestcoders.library.inventory.Inventory;
 import bestcoders.library.items.Item;
-import bestcoders.library.items.ItemType;
 import bestcoders.library.members.LibraryMember;
 
 /**
@@ -21,52 +14,46 @@ import bestcoders.library.members.LibraryMember;
  * @author stevenpowell
  *
  */
-public class FrontDesk {
-    private static Logger logger = LoggerFactory.getLogger(FrontDesk.class);
+public interface FrontDesk {
+    /**
+     * Support for searching the library for a specific item.
+     *
+     * @param i
+     * @return
+     */
+    public Optional<Item> findItemById(final int i);
 
-    private Library library;
+    /**
+     *
+     * @param m
+     * @return A collection of items available for the member to borrow
+     */
+    public Collection<Item> getAvaliableItems(final LibraryMember m);
 
-    public FrontDesk() {
-	// TODO: the Front Desk should not create the Library.
-	// https://github.com/codingSteve/library/issues/5
-	library = new Library(BusinessDate.getCurrentDate(), new Inventory());
-    }
+    /**
+     *
+     * @param m
+     * @return a Collection of items the member has failed to return by the
+     *         expected date
+     */
+    public Collection<LoanRecord> getOverdueItems(final LibraryMember m);
 
-    public Optional<Item> findItemById(final int i) {
+    /**
+     * Checkout the item if the member is permitted to do so
+     * 
+     * @param m
+     * @param i
+     * @return
+     */
+    public boolean requestCheckout(final LibraryMember m, final Item i);
 
-	return library.getItemById(i);
-
-    }
-
-    public Collection<Item> getAvaliableItems(final LibraryMember m) {
-	final Collection<ItemType> roles = m.getPermittedItemTypes();
-
-	final Collection<Item> availableItems = library.getAvailableItems(roles);
-	return availableItems;
-
-    }
-
-    public Collection<LoanRecord> getOverdueItems(final LibraryMember m) {
-	logger.info("About to check for overdue items");
-
-	return library.getOverdueItems(m);
-    }
-
-    public boolean requestCheckout(final LibraryMember m, final Item i) {
-	logger.info("About to check for availability for item {}", i);
-
-	final boolean isAvailable = (0 < library.getStockAvailable(i));
-	final boolean checkoutSuccessful = isAvailable && library.checkout(i, m);
-	return checkoutSuccessful;
-    }
-
-    public boolean returnItem(final LibraryMember m, final Item i) {
-	return library.returnItem(m, i);
-
-    }
-
-    protected void setLibrary(final Library l) {
-	library = l;
-    }
+    /**
+     * Return the item once the member has finished with it.
+     *
+     * @param m
+     * @param i
+     * @return
+     */
+    public boolean returnItem(final LibraryMember m, final Item i);
 
 }
