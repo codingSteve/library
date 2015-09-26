@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import bestcoders.library.frontdesk.FrontDesk;
+import bestcoders.library.frontdesk.SimpleFrontDesk;
 import bestcoders.library.helpers.LibraryFactory;
 import bestcoders.library.items.Item;
 import bestcoders.library.items.ItemType;
@@ -27,7 +28,7 @@ public class TestBorrow {
 	final Library library = LibraryFactory.getLibrary();
 
 	final LibraryMember m = new LibraryMember(1, "Steve", types);
-	final FrontDesk d = new TestFrontDesk(library);
+	final FrontDesk d = new SimpleFrontDesk(library);
 
 	final Optional<Item> b = d.findItemById(1);
 	assertTrue(b.isPresent());

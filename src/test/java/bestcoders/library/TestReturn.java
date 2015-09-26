@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.junit.Test;
 
 import bestcoders.library.frontdesk.FrontDesk;
+import bestcoders.library.frontdesk.SimpleFrontDesk;
 import bestcoders.library.helpers.LibraryFactory;
 import bestcoders.library.items.Item;
 import bestcoders.library.items.ItemType;
@@ -25,7 +26,7 @@ public class TestReturn {
 
 	final Library l = LibraryFactory.getLibrary();
 
-	final FrontDesk d = new TestFrontDesk(l);
+	final FrontDesk d = new SimpleFrontDesk(l);
 
 	final Optional<Item> b = d.findItemById(1);
 
@@ -46,7 +47,7 @@ public class TestReturn {
 	final List<ItemType> types = Arrays.asList(new ItemType[] { ItemType.BOOK });
 	final LibraryMember m = new LibraryMember(1, "Steve", types);
 	final Library l = LibraryFactory.getLibrary();
-	final FrontDesk d = new TestFrontDesk(l);
+	final FrontDesk d = new SimpleFrontDesk(l);
 
 	final Optional<Item> b = d.findItemById(1);
 	assertTrue(b.isPresent());

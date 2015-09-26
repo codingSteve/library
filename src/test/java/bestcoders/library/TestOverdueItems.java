@@ -12,10 +12,12 @@ import java.util.Optional;
 import org.junit.Test;
 
 import bestcoders.library.frontdesk.FrontDesk;
+import bestcoders.library.frontdesk.SimpleFrontDesk;
 import bestcoders.library.helpers.LibraryFactory;
 import bestcoders.library.inventory.Inventory;
 import bestcoders.library.items.Item;
 import bestcoders.library.items.ItemType;
+import bestcoders.library.loans.LoanRecord;
 import bestcoders.library.members.LibraryMember;
 
 public class TestOverdueItems {
@@ -23,7 +25,7 @@ public class TestOverdueItems {
     @Test
     public void testNoLoans() {
 	final Library l = LibraryFactory.getLibrary();
-	final FrontDesk f = new TestFrontDesk(l);
+	final FrontDesk f = new SimpleFrontDesk(l);
 
 	final LibraryMember m = new LibraryMember(1, "Steve", Arrays.asList(new ItemType[] { ItemType.BOOK }));
 
@@ -38,7 +40,7 @@ public class TestOverdueItems {
     @Test
     public void testSomeLoans() {
 	final Library l = LibraryFactory.getLibrary();
-	final FrontDesk f = new TestFrontDesk(l);
+	final FrontDesk f = new SimpleFrontDesk(l);
 
 	final LibraryMember m = new LibraryMember(1, "Steve", Arrays.asList(new ItemType[] { ItemType.BOOK }));
 
@@ -73,7 +75,7 @@ public class TestOverdueItems {
 	};
 
 	final Library l = LibraryFactory.getLibrary(moveableDate, new Inventory());
-	final FrontDesk f = new TestFrontDesk(l);
+	final FrontDesk f = new SimpleFrontDesk(l);
 
 	final LibraryMember m = new LibraryMember(1, "Steve", Arrays.asList(new ItemType[] { ItemType.BOOK }));
 

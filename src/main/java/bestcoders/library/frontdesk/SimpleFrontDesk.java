@@ -6,11 +6,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import bestcoders.library.BusinessDate;
 import bestcoders.library.Library;
-import bestcoders.library.LoanRecord;
-import bestcoders.library.inventory.Inventory;
 import bestcoders.library.items.Item;
+import bestcoders.library.loans.LoanRecord;
 import bestcoders.library.members.LibraryMember;
 
 /**
@@ -25,10 +23,8 @@ public class SimpleFrontDesk implements FrontDesk {
 
     private Library library;
 
-    public SimpleFrontDesk() {
-	// TODO: the Front Desk should not create the Library.
-	// https://github.com/codingSteve/library/issues/5
-	library = new Library(BusinessDate.getCurrentDate(), new Inventory());
+    public SimpleFrontDesk(final Library library) {
+	this.library = library;
     }
 
     @Override

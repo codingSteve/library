@@ -3,8 +3,8 @@ package bestcoders.library.frontdesk;
 import java.util.Collection;
 import java.util.Optional;
 
-import bestcoders.library.LoanRecord;
 import bestcoders.library.items.Item;
+import bestcoders.library.loans.LoanRecord;
 import bestcoders.library.members.LibraryMember;
 
 /**

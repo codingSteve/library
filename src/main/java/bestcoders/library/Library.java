@@ -15,6 +15,8 @@ import bestcoders.library.inventory.Inventory;
 import bestcoders.library.inventory.InventoryItem;
 import bestcoders.library.items.Item;
 import bestcoders.library.items.ItemType;
+import bestcoders.library.loans.LoanRecord;
+import bestcoders.library.loans.LoanState;
 import bestcoders.library.members.LibraryMember;
 
 public class Library {
@@ -99,7 +101,7 @@ public class Library {
     }
 
     private Stream<LoanRecord> getOpenLoansStream() {
-	return loans.stream().filter(lr -> lr.state == LoanState.OPEN);
+	return loans.stream().filter(lr -> lr.getState() == LoanState.OPEN);
     }
 
     private Stream<LoanRecord> getOpenLoansStreamByUser(final LibraryMember m) {
@@ -115,7 +117,7 @@ public class Library {
     }
 
     private Stream<LoanRecord> getOverdueItemsStream() {
-	return getOpenLoansStream().filter(lr -> lr.expectedReturnDate.compareTo(businessDate) < 0);
+	return getOpenLoansStream().filter(lr -> lr.getExpectedReturnDate().compareTo(businessDate) < 0);
     }
 
     private Stream<LoanRecord> getOverdueItemsStreamByMember(final LibraryMember m) {
@@ -147,7 +149,8 @@ public class Library {
     }
 
     public boolean returnItem(final LibraryMember m, final Item i) {
-	final Stream<LoanRecord> memberLoans = getOpenLoansStreamByUser(m).filter(lr -> lr.item.equals(i)).sorted();
+	final Stream<LoanRecord> memberLoans = getOpenLoansStreamByUser(m).filter(lr -> lr.getItem().equals(i))
+		.sorted();
 
 	final Optional<LoanRecord> loanRecord = memberLoans.findFirst();
 
@@ -156,8 +159,8 @@ public class Library {
 	if (loanRecord.isPresent()) {
 	    logger.debug("Item: {} has been loaned to member: {}", i, m);
 	    final LoanRecord lr = loanRecord.get();
-	    lr.returnDate = BusinessDate.getCurrentDate();
-	    lr.state = LoanState.CLOSED;
+	    lr.setReturnDate(BusinessDate.getCurrentDate());
+	    lr.setState(LoanState.CLOSED);
 
 	    op = true;
 	} else {

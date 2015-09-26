@@ -29,7 +29,7 @@ public class TestInventory {
 
 	final List<ItemType> types = Arrays.asList(new ItemType[] { ItemType.BOOK });
 	final LibraryMember m = new LibraryMember(1, "Steve", types);
-	final FrontDesk d = new SimpleFrontDesk();
+	final FrontDesk d = new SimpleFrontDesk(LibraryFactory.getLibrary());
 
 	final Collection<Item> availableInventory = d.getAvaliableItems(m);
 	final int actualResult = availableInventory.size();
@@ -44,7 +44,7 @@ public class TestInventory {
     public void testInventory() {
 
 	final Library library = LibraryFactory.getLibrary();
-	final FrontDesk d = new TestFrontDesk(library);
+	final FrontDesk d = new SimpleFrontDesk(library);
 
 	final List<ItemType> types = Arrays.asList(new ItemType[] { ItemType.BOOK });
 	final LibraryMember m = new LibraryMember(1, "Steve", types);
@@ -76,7 +76,7 @@ public class TestInventory {
     public void testInventoryWithLoans() {
 
 	final Library library = LibraryFactory.getLibrary();
-	final FrontDesk d = new TestFrontDesk(library);
+	final FrontDesk d = new SimpleFrontDesk(library);
 
 	final Item stoic = getMeditationsBook();
 	library.addInventoryItem(stoic, 1);
@@ -101,7 +101,7 @@ public class TestInventory {
     public void testInventoryWithLoansAndRemainingStock() {
 
 	final Library library = LibraryFactory.getLibrary();
-	final FrontDesk d = new TestFrontDesk(library);
+	final FrontDesk d = new SimpleFrontDesk(library);
 
 	final Item stoic = getMeditationsBook();
 	library.addInventoryItem(stoic, 2);
