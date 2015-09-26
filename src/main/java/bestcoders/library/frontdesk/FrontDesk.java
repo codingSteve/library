@@ -1,4 +1,4 @@
-package bestcoders.library;
+package bestcoders.library.frontdesk;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -6,6 +6,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import bestcoders.library.BusinessDate;
+import bestcoders.library.Library;
+import bestcoders.library.LoanRecord;
 import bestcoders.library.inventory.Inventory;
 import bestcoders.library.items.Item;
 import bestcoders.library.items.ItemType;
@@ -36,7 +39,7 @@ public class FrontDesk {
     }
 
     public Collection<Item> getAvaliableItems(final LibraryMember m) {
-	final Collection<ItemType> roles = m.permittedItemTypes;
+	final Collection<ItemType> roles = m.getPermittedItemTypes();
 
 	final Collection<Item> availableItems = library.getAvailableItems(roles);
 	return availableItems;
@@ -50,7 +53,7 @@ public class FrontDesk {
     }
 
     public boolean requestCheckout(final LibraryMember m, final Item i) {
-	logger.info("About to check for availability for item {}");
+	logger.info("About to check for availability for item {}", i);
 
 	final boolean isAvailable = (0 < library.getStockAvailable(i));
 	final boolean checkoutSuccessful = isAvailable && library.checkout(i, m);

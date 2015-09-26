@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import bestcoders.library.frontdesk.FrontDesk;
 import bestcoders.library.helpers.LibraryFactory;
 import bestcoders.library.items.Item;
 import bestcoders.library.items.ItemType;

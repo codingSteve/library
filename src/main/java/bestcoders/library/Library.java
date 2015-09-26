@@ -89,9 +89,28 @@ public class Library {
 		.map(InventoryItem::getItem).findFirst();
     }
 
+    private Stream<LoanRecord> getOpenLoansStream() {
+	return loans.stream().filter(lr -> lr.state == LoanState.OPEN);
+    }
+
+    private Stream<LoanRecord> getOpenLoansStreamByUser(final LibraryMember m) {
+	return getOpenLoansStream().filter(lr -> lr.getMember().equals(m));
+    }
+
+    public Collection<LoanRecord> getOverdueItems() {
+	return getOverdueItemsStream().collect(Collectors.toList());
+    }
+
     public Collection<LoanRecord> getOverdueItems(final LibraryMember m) {
-	return loans.stream().filter(lr -> lr.expectedReturnDate.compareTo(businessDate) < 0)
-		.collect(Collectors.toList());
+	return getOverdueItemsStreamByMember(m).collect(Collectors.toList());
+    }
+
+    private Stream<LoanRecord> getOverdueItemsStream() {
+	return getOpenLoansStream().filter(lr -> lr.expectedReturnDate.compareTo(businessDate) < 0);
+    }
+
+    private Stream<LoanRecord> getOverdueItemsStreamByMember(final LibraryMember m) {
+	return getOverdueItemsStream().filter(lr -> lr.getMember().equals(m));
     }
 
     public int getStockAvailable(final Item i) {
@@ -114,8 +133,7 @@ public class Library {
     }
 
     public boolean returnItem(final LibraryMember m, final Item i) {
-	final Stream<LoanRecord> memberLoans = loans.stream()
-		.filter(lr -> lr.state == LoanState.OPEN && lr.member.equals(m) && lr.item.equals(i)).sorted();
+	final Stream<LoanRecord> memberLoans = getOpenLoansStreamByUser(m).filter(lr -> lr.item.equals(i)).sorted();
 
 	final Optional<LoanRecord> loanRecord = memberLoans.findFirst();
 

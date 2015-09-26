@@ -3,7 +3,7 @@ package bestcoders.library;
 import bestcoders.library.items.Item;
 import bestcoders.library.members.LibraryMember;
 
-public class LoanRecord {
+public class LoanRecord implements Comparable<LoanRecord> {
     final Item item;
     final LibraryMember member;
     final BusinessDate checkoutDate;
@@ -17,6 +17,11 @@ public class LoanRecord {
 	checkoutDate = BusinessDate.getCurrentDate();
 	expectedReturnDate = checkoutDate.addDays(7);
 	state = LoanState.OPEN;
+    }
+
+    @Override
+    public int compareTo(final LoanRecord lr) {
+	return getCheckoutDate().compareTo(lr.getCheckoutDate());
     }
 
     public final BusinessDate getCheckoutDate() {

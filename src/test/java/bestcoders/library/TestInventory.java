@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import org.junit.Test;
 
+import bestcoders.library.frontdesk.FrontDesk;
 import bestcoders.library.helpers.LibraryFactory;
 import bestcoders.library.items.Item;
 import bestcoders.library.items.ItemType;
