@@ -3,6 +3,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+  <properties> 
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>bestcoders</groupId>
   <artifactId>library</artifactId>
@@ -14,7 +18,7 @@
     <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>3.8.1</version>
+        <version>4.12</version>
         <scope>test</scope>
     </dependency>
   </dependencies>
@@ -59,4 +63,5 @@
     </plugins>  
   </build>
 
+  
 </project>
