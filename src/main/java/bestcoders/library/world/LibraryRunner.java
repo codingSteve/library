@@ -29,7 +29,7 @@ import bestcoders.library.members.LibraryMember;
 public class LibraryRunner {
     private static Logger logger = LoggerFactory.getLogger(LibraryRunner.class);
 
-    public static void main(final String[] ARGV) throws IOException {
+    public static void main(final String[] ARGV) throws IOException, InterruptedException {
 	final LibraryRunner world = new LibraryRunner();
 	world.loadInventoryFromCSV("./src/main/resources/inventory.csv");
 
@@ -37,7 +37,12 @@ public class LibraryRunner {
 
 	final Thread clock = world.startTime();
 
-	world.startMembers();
+	final List<Thread> memberThreads = world.startMembers();
+
+	clock.join();
+	for (final Thread t : memberThreads) {
+	    t.join();
+	}
 
     }
 
