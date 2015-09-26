@@ -1,6 +1,10 @@
 package bestcoders.library.items;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Item {
+    private static Logger logger = LoggerFactory.getLogger(Item.class);
 
     final int id;
     final String title;
@@ -11,6 +15,19 @@ public class Item {
 	this.id = id;
 	this.title = title;
 	this.type = type;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+
+	logger.trace("About to test o == {} for equality against this == {} ", o, this);
+	final boolean op;
+	if (o instanceof Item) {
+	    op = ((Item) o).getId() == getId();
+	} else {
+	    op = false;
+	}
+	return op;
     }
 
     public int getId() {

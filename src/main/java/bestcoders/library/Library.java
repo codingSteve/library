@@ -76,6 +76,12 @@ public class Library {
 	return availableItems;
     }
 
+    public Optional<Item> getItemById(final int i) {
+	logger.info("About to search for item with id of {}", i);
+	return inventory.getFullCatalogue().stream().filter(ii -> ii.getItem().getId() == i).limit(1l)
+		.map(InventoryItem::getItem).findFirst();
+    }
+
     public int getStockAvailable(final Item i) {
 	logger.info("About to check for availability of {}", i);
 

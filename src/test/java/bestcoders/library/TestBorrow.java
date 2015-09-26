@@ -1,27 +1,40 @@
 package bestcoders.library;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import bestcoders.library.helpers.LibraryFactory;
 import bestcoders.library.items.Item;
 import bestcoders.library.items.ItemType;
 import bestcoders.library.members.LibraryMember;
 
 public class TestBorrow {
+    private static Logger logger = LoggerFactory.getLogger(TestBorrow.class);
 
     @Test
     public void testBorrow() {
 	final List<ItemType> types = Arrays.asList(new ItemType[] { ItemType.BOOK });
 
-	final LibraryMember m = new LibraryMember(1, "Steve", types);
-	final FrontDesk d = new FrontDesk();
+	final Library library = LibraryFactory.getLibrary();
 
-	final Item b = d.findItemById(1);
-	final boolean actualResult = d.requestCheckout(m, b);
+	final LibraryMember m = new LibraryMember(1, "Steve", types);
+	final FrontDesk d = new TestFrontDesk(library);
+
+	final Optional<Item> b = d.findItemById(1);
+	assertTrue(b.isPresent());
+
+	final Item book = b.get();
+	logger.info("Found item == {}", book);
+
+	final boolean actualResult = d.requestCheckout(m, book);
 	final boolean expectedResult = true;
 
 	assertEquals(expectedResult, actualResult);
