@@ -2,7 +2,7 @@ package bestcoders.library;
 
 import java.util.Calendar;
 
-public abstract class BusinessDate {
+public abstract class BusinessDate implements Comparable<BusinessDate> {
 
     public static BusinessDate getCurrentDate() {
 	final long today = new java.util.Date().getTime();
@@ -28,6 +28,11 @@ public abstract class BusinessDate {
 		return new java.util.Date(targetDate);
 	    }
 	};
+    }
+
+    @Override
+    public int compareTo(final BusinessDate o) {
+	return getDate().compareTo(o.getDate());
     }
 
     public abstract java.util.Date getDate();

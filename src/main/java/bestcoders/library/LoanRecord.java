@@ -1,19 +1,54 @@
 package bestcoders.library;
 
-public class LoanRecord {
-    public final Item item;
-    public final Member member;
-    public final BusinessDate checkoutDate;
-    public final BusinessDate expectedReturnDate;
-    public BusinessDate returnDate;
-    public LoanState state;
+import bestcoders.library.items.Item;
+import bestcoders.library.members.LibraryMember;
 
-    public LoanRecord(final Item i, final Member m) {
+public class LoanRecord {
+    final Item item;
+    final LibraryMember member;
+    final BusinessDate checkoutDate;
+    final BusinessDate expectedReturnDate;
+    BusinessDate returnDate;
+    LoanState state;
+
+    public LoanRecord(final Item i, final LibraryMember m) {
 	item = i;
 	member = m;
 	checkoutDate = BusinessDate.getCurrentDate();
 	expectedReturnDate = checkoutDate.addDays(7);
 	state = LoanState.OPEN;
+    }
+
+    public final BusinessDate getCheckoutDate() {
+	return checkoutDate;
+    }
+
+    public BusinessDate getExpectedReturnDate() {
+	return expectedReturnDate;
+    }
+
+    public Item getItem() {
+	return item;
+    }
+
+    public LibraryMember getMember() {
+	return member;
+    }
+
+    public BusinessDate getReturnDate() {
+	return returnDate;
+    }
+
+    public LoanState getState() {
+	return state;
+    }
+
+    public void setReturnDate(final BusinessDate returnDate) {
+	this.returnDate = returnDate;
+    }
+
+    public void setState(final LoanState state) {
+	this.state = state;
     }
 
 }
