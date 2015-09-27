@@ -2,10 +2,9 @@ package bestcoders.library;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -14,15 +13,17 @@ import org.slf4j.LoggerFactory;
 import bestcoders.library.inventory.Inventory;
 import bestcoders.library.inventory.InventoryItem;
 import bestcoders.library.items.Item;
-import bestcoders.library.items.ItemType;
 import bestcoders.library.loans.LoanRecord;
-import bestcoders.library.loans.LoanState;
 import bestcoders.library.members.LibraryMember;
+import bestcoders.library.services.AvailableItemsService;
+import bestcoders.library.services.BorrowService;
+import bestcoders.library.services.MemberOverdueItemsReport;
+import bestcoders.library.services.ReturnService;
 
 public class Library {
     private static Logger logger = LoggerFactory.getLogger(Library.class);
 
-    private final Collection<LoanRecord> loans = new ArrayList<LoanRecord>();
+    private final List<LoanRecord> loans = new ArrayList<LoanRecord>();
 
     private final Inventory inventory;
 
@@ -38,22 +39,19 @@ public class Library {
 	return true;
     }
 
-    private void addLoanRecord(final Item i, final LibraryMember m) {
+    public void addLoanRecord(final Item i, final LibraryMember m) {
 	final LoanRecord l = new LoanRecord(i, m);
 	loans.add(l);
 	logger.debug("We've recorded {} loan(s).", loans.size());
     }
 
+    private boolean applyInventoryService(final Item i, final LibraryMember m, final InventoryService s) {
+	return s.apply(m, i);
+    }
+
     public boolean checkout(final Item i, final LibraryMember m) {
-
-	final boolean isAvailable = (0 < getStockAvailable(i, m));
-
-	if (isAvailable) {
-	    logger.debug("About to add new loan record for item {} to member {}", i, m);
-	    addLoanRecord(i, m);
-	}
-
-	return isAvailable;
+	final InventoryService s = new BorrowService(this);
+	return applyInventoryService(i, m, s);
     }
 
     /**
@@ -62,36 +60,12 @@ public class Library {
      * @return the items available for loan to the member
      */
     public Collection<Item> getAvailableItems(final LibraryMember member) {
+	final MemberItemReport r = new AvailableItemsService(this);
+	return r.apply(member);
+    }
 
-	final Collection<ItemType> roles = member.getPermittedItemTypes();
-
-	logger.info("About to prepare available items for {}", roles);
-	final Stream<LoanRecord> openLoans = getOpenLoansStream();
-	final Map<Item, Long> onLoan = openLoans
-		.collect(Collectors.groupingBy(LoanRecord::getItem, Collectors.counting()));
-
-	final Stream<InventoryItem> authorizedItems = getPermittedItemsStreamByMember(member);
-
-	final Map<Item, Integer> authorizedItemsSummary = authorizedItems.collect(Collectors
-		.groupingBy(InventoryItem::getItem, Collectors.reducing(0, InventoryItem::getQuantity, Integer::sum)));
-
-	final Collection<Item> availableItems = new ArrayList<Item>();
-	for (final Entry<Item, Integer> e : authorizedItemsSummary.entrySet()) {
-	    final Item item = e.getKey();
-
-	    final Long outOnLoan = onLoan.getOrDefault(item, 0l);
-	    final Long totalOwned = e.getValue().longValue();
-	    final boolean itemsRemainingInStock = (outOnLoan < totalOwned);
-
-	    logger.debug("Item: {} has {} copies on loan with a total of {} copies owned.", item, outOnLoan,
-		    totalOwned);
-
-	    if (itemsRemainingInStock) {
-		availableItems.add(item);
-	    }
-	}
-
-	return availableItems;
+    public BusinessDate getBusinessDate() {
+	return businessDate;
     }
 
     public Optional<Item> getItemById(final int i) {
@@ -100,31 +74,16 @@ public class Library {
 		.map(InventoryItem::getItem).findFirst();
     }
 
-    private Stream<LoanRecord> getOpenLoansStream() {
-	return loans.stream().filter(lr -> lr.getState() == LoanState.OPEN);
-    }
-
-    private Stream<LoanRecord> getOpenLoansStreamByUser(final LibraryMember m) {
-	return getOpenLoansStream().filter(lr -> lr.getMember().equals(m));
-    }
-
-    public Collection<LoanRecord> getOverdueItems() {
-	return getOverdueItemsStream().collect(Collectors.toList());
+    public List<LoanRecord> getLoans() {
+	return Collections.unmodifiableList(loans);
     }
 
     public Collection<LoanRecord> getOverdueItems(final LibraryMember m) {
-	return getOverdueItemsStreamByMember(m).collect(Collectors.toList());
+	final MemberInventoryReport r = new MemberOverdueItemsReport(this);
+	return r.apply(m);
     }
 
-    private Stream<LoanRecord> getOverdueItemsStream() {
-	return getOpenLoansStream().filter(lr -> lr.getExpectedReturnDate().compareTo(businessDate) < 0);
-    }
-
-    private Stream<LoanRecord> getOverdueItemsStreamByMember(final LibraryMember m) {
-	return getOverdueItemsStream().filter(lr -> lr.getMember().equals(m));
-    }
-
-    private Stream<InventoryItem> getPermittedItemsStreamByMember(final LibraryMember m) {
+    public Stream<InventoryItem> getPermittedItemsStreamByMember(final LibraryMember m) {
 	return inventory.getFullCatalogue().stream()
 		.filter(invItem -> m.getPermittedItemTypes().contains(invItem.getItem().getType()));
     }
@@ -149,25 +108,8 @@ public class Library {
     }
 
     public boolean returnItem(final LibraryMember m, final Item i) {
-	final Stream<LoanRecord> memberLoans = getOpenLoansStreamByUser(m).filter(lr -> lr.getItem().equals(i))
-		.sorted();
-
-	final Optional<LoanRecord> loanRecord = memberLoans.findFirst();
-
-	final boolean op;
-
-	if (loanRecord.isPresent()) {
-	    logger.debug("Item: {} has been loaned to member: {}", i, m);
-	    final LoanRecord lr = loanRecord.get();
-	    lr.setReturnDate(BusinessDate.getCurrentDate());
-	    lr.setState(LoanState.CLOSED);
-
-	    op = true;
-	} else {
-	    logger.debug("Item: {} has not been loaned to member: {}", i, m);
-	    op = false;
-	}
-	return op;
+	final InventoryService s = new ReturnService(this);
+	return applyInventoryService(i, m, s);
     }
 
 }

@@ -141,6 +141,7 @@ public class LibraryRunner {
 		    }
 
 		    final int days = rand.nextInt(9) + 1;
+		    logger.info("Member: {} about to enjoy the item for {} day(s)", m.getMemberNumber(), days);
 		    try {
 			Thread.sleep(500 * days);
 		    } catch (final InterruptedException e) {
