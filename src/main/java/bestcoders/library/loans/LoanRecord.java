@@ -15,7 +15,7 @@ public class LoanRecord implements Comparable<LoanRecord> {
     public LoanRecord(final Item i, final LibraryMember m, final BusinessDate checkoutDate) {
 	item = i;
 	member = m;
-	this.checkoutDate = checkoutDate;
+	this.checkoutDate = checkoutDate.addDays(0);
 	expectedReturnDate = checkoutDate.addDays(7);
 	state = LoanState.OPEN;
     }
@@ -55,6 +55,14 @@ public class LoanRecord implements Comparable<LoanRecord> {
 
     public void setState(final LoanState state) {
 	this.state = state;
+    }
+
+    @Override
+    public String toString() {
+	return "{ member : " + member.toString() + "," + "item : " + item.toString() + "," + "checkoutDate : "
+		+ checkoutDate + "," + "expectedReturnDate : " + expectedReturnDate + ", " + "returnDate : "
+		+ returnDate + ", state : " + state + "}";
+
     }
 
 }

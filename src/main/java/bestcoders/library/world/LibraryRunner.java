@@ -25,8 +25,17 @@ import bestcoders.library.frontdesk.SimpleFrontDesk;
 import bestcoders.library.inventory.Inventory;
 import bestcoders.library.items.Item;
 import bestcoders.library.items.ItemType;
+import bestcoders.library.loans.LoanRecord;
 import bestcoders.library.members.LibraryMember;
 
+/**
+ * Mock environment to set up a set of Library members and exercise the core
+ * Library classes.
+ *
+ *
+ * @author stevenpowell
+ * @see http://codingsteve.github.io/docs/2015-09-26-library-project/
+ */
 public class LibraryRunner {
     private static Logger logger = LoggerFactory.getLogger(LibraryRunner.class);
 
@@ -47,6 +56,8 @@ public class LibraryRunner {
 	    t.join();
 	}
 
+	world.listLoanRecords();
+
     }
 
     private List<LibraryMember> members;
@@ -54,8 +65,8 @@ public class LibraryRunner {
     private final Calendar calendar = Calendar.getInstance();
 
     private Library library;
-    private FrontDesk frontDesk;
 
+    private FrontDesk frontDesk;
     private BusinessDate businessDate;
 
     private Inventory inventory;
@@ -95,6 +106,14 @@ public class LibraryRunner {
 	}
 
 	inventory.addToInventory(item, 1);
+    }
+
+    private void listLoanRecords() {
+
+	for (final LoanRecord lr : library.getLoans()) {
+	    System.out.println(lr);
+	}
+
     }
 
     private void loadInventoryFromCSV(final String path) throws IOException {

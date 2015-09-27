@@ -5,6 +5,8 @@ Best coders: Library
 
 Simple project showing a set of public library classes and behaviors
 
+http://codingsteve.github.io/docs/2015-09-26-library-project/
+
 Basic functionality
 -------------------
 

@@ -11,8 +11,6 @@ import java.util.Calendar;
  */
 public class BusinessDate implements Comparable<BusinessDate> {
 
-    private final java.util.Date d = new java.util.Date();
-
     public BusinessDate addDays(final int days) {
 	final Calendar c = Calendar.getInstance();
 	final java.util.Date currentDate = getDate();
@@ -35,6 +33,11 @@ public class BusinessDate implements Comparable<BusinessDate> {
 
     public java.util.Date getDate() {
 	return new java.util.Date();
+    }
+
+    @Override
+    public String toString() {
+	return getDate().toString();
     }
 
 }
