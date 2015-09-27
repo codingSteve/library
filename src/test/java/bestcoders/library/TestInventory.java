@@ -34,7 +34,7 @@ public class TestInventory {
 	final Collection<Item> availableInventory = d.getAvaliableItems(m);
 	final int actualResult = availableInventory.size();
 
-	final int expectedResult = 0;
+	final int expectedResult = 2;
 
 	assertEquals(expectedResult, actualResult);
 
