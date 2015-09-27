@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Optional;
 
 import bestcoders.library.items.Item;
-import bestcoders.library.loans.LoanRecord;
 import bestcoders.library.members.LibraryMember;
 
 /**
@@ -36,11 +35,11 @@ public interface FrontDesk {
      * @return a Collection of items the member has failed to return by the
      *         expected date
      */
-    public Collection<LoanRecord> getOverdueItems(final LibraryMember m);
+    public Collection<Item> getOverdueItems(final LibraryMember m);
 
     /**
      * Checkout the item if the member is permitted to do so
-     * 
+     *
      * @param m
      * @param i
      * @return

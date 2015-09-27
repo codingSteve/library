@@ -3,7 +3,9 @@ package bestcoders.library;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -29,9 +31,28 @@ public class Library {
 
     private final BusinessDate businessDate;
 
+    private final Map<SupportedService, InventoryService> supportedInventoryServices;
+
+    private final Map<SupportedService, MemberItemReport> supportedMemberReportServices;
+
     public Library(final BusinessDate businessDate, final Inventory inventory) {
 	this.businessDate = businessDate;
 	this.inventory = inventory;
+
+	final Map<SupportedService, InventoryService> m = new HashMap<SupportedService, InventoryService>();
+
+	m.put(SupportedService.BORROW, new BorrowService(this));
+	m.put(SupportedService.RETURN, new ReturnService(this));
+
+	supportedInventoryServices = Collections.unmodifiableMap(m);
+
+	final Map<SupportedService, MemberItemReport> rs = new HashMap<SupportedService, MemberItemReport>();
+
+	rs.put(SupportedService.AVAILABLE_ITEMS, new AvailableItemsService(this));
+	rs.put(SupportedService.OVERDUE_ITEMS, new MemberOverdueItemsReport(this));
+
+	supportedMemberReportServices = Collections.unmodifiableMap(rs);
+
     }
 
     public boolean addInventoryItem(final Item item, final int quantity) {
@@ -45,23 +66,34 @@ public class Library {
 	logger.debug("We've recorded {} loan(s).", loans.size());
     }
 
-    private boolean applyInventoryService(final Item i, final LibraryMember m, final InventoryService s) {
-	return s.apply(m, i);
-    }
-
-    public boolean checkout(final Item i, final LibraryMember m) {
-	final InventoryService s = new BorrowService(this);
-	return applyInventoryService(i, m, s);
+    /**
+     *
+     *
+     * @param i
+     *            the item we want to act on
+     * @param m
+     *            the member performing or requesting the action
+     * @param s
+     *            the service type we want to apply
+     * @return boolean indicating success of the operation
+     */
+    public boolean applyInventoryService(final Item i, final LibraryMember m, final SupportedService s) {
+	final InventoryService service = supportedInventoryServices.get(s);
+	return service.apply(m, i);
     }
 
     /**
+     * Generic method to support Item reporting for members
      *
-     * @param member
-     * @return the items available for loan to the member
+     * @param m
+     *            the member we're reporting on
+     * @param s
+     *            the service report we want to run
+     * @return a collection of Items from the concrete service
      */
-    public Collection<Item> getAvailableItems(final LibraryMember member) {
-	final MemberItemReport r = new AvailableItemsService(this);
-	return r.apply(member);
+    public Collection<Item> applyMemberItemReport(final LibraryMember m, final SupportedService s) {
+	final MemberItemReport r = supportedMemberReportServices.get(s);
+	return r.apply(m);
     }
 
     public BusinessDate getBusinessDate() {
@@ -78,38 +110,9 @@ public class Library {
 	return Collections.unmodifiableList(loans);
     }
 
-    public Collection<LoanRecord> getOverdueItems(final LibraryMember m) {
-	final MemberInventoryReport r = new MemberOverdueItemsReport(this);
-	return r.apply(m);
-    }
-
     public Stream<InventoryItem> getPermittedItemsStreamByMember(final LibraryMember m) {
 	return inventory.getFullCatalogue().stream()
 		.filter(invItem -> m.getPermittedItemTypes().contains(invItem.getItem().getType()));
-    }
-
-    public int getStockAvailable(final Item i, final LibraryMember m) {
-	logger.info("About to check for availability of {}", i);
-
-	final int copiesAvailable;
-	final Optional<InventoryItem> totalInventory = getPermittedItemsStreamByMember(m)
-		.filter(invItem -> invItem.getItem().equals(i)).findAny();
-
-	if (totalInventory.isPresent()) {
-	    final InventoryItem ii = totalInventory.get();
-	    copiesAvailable = ii.getQuantity();
-	} else {
-	    copiesAvailable = 0;
-	}
-
-	logger.debug("Item: {} has copies available == {}", i, copiesAvailable);
-
-	return copiesAvailable;
-    }
-
-    public boolean returnItem(final LibraryMember m, final Item i) {
-	final InventoryService s = new ReturnService(this);
-	return applyInventoryService(i, m, s);
     }
 
 }

@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import bestcoders.library.BusinessDate;
 import bestcoders.library.Library;
+import bestcoders.library.SupportedService;
 import bestcoders.library.frontdesk.FrontDesk;
 import bestcoders.library.frontdesk.SimpleFrontDesk;
 import bestcoders.library.inventory.Inventory;
@@ -131,7 +132,8 @@ public class LibraryRunner {
 	    public void run() {
 		for (int i = 0; ++i < 20;) {
 
-		    final Collection<Item> availableItems = library.getAvailableItems(m);
+		    final Collection<Item> availableItems = library.applyMemberItemReport(m,
+			    SupportedService.AVAILABLE_ITEMS);
 		    currentItem = availableItems.stream().findAny();
 
 		    if (currentItem.isPresent()) {

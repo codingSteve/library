@@ -17,7 +17,6 @@ import bestcoders.library.helpers.LibraryFactory;
 import bestcoders.library.inventory.Inventory;
 import bestcoders.library.items.Item;
 import bestcoders.library.items.ItemType;
-import bestcoders.library.loans.LoanRecord;
 import bestcoders.library.members.LibraryMember;
 
 public class TestOverdueItems {
@@ -29,7 +28,7 @@ public class TestOverdueItems {
 
 	final LibraryMember m = new LibraryMember(1, "Steve", Arrays.asList(new ItemType[] { ItemType.BOOK }));
 
-	final Collection<LoanRecord> overdueItems = f.getOverdueItems(m);
+	final Collection<Item> overdueItems = f.getOverdueItems(m);
 
 	final int expectedResult = 0;
 	final int actualResult = overdueItems.size();
@@ -51,7 +50,7 @@ public class TestOverdueItems {
 	final boolean checkoutSuceeded = f.requestCheckout(m, book);
 	assertTrue(checkoutSuceeded);
 
-	final Collection<LoanRecord> overdueItems = f.getOverdueItems(m);
+	final Collection<Item> overdueItems = f.getOverdueItems(m);
 
 	final int expectedResult = 0;
 	final int actualResult = overdueItems.size();
@@ -88,7 +87,7 @@ public class TestOverdueItems {
 
 	c.add(Calendar.DAY_OF_MONTH, 10);
 
-	final Collection<LoanRecord> overdueItems = f.getOverdueItems(m);
+	final Collection<Item> overdueItems = f.getOverdueItems(m);
 	final int expectedResult = 1;
 	final int actualResult = overdueItems.size();
 	assertEquals(expectedResult, actualResult);

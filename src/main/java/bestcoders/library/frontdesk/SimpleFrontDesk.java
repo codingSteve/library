@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import bestcoders.library.Library;
+import bestcoders.library.SupportedService;
 import bestcoders.library.items.Item;
-import bestcoders.library.loans.LoanRecord;
 import bestcoders.library.members.LibraryMember;
 
 /**
@@ -36,29 +36,29 @@ public class SimpleFrontDesk implements FrontDesk {
 
     @Override
     public Collection<Item> getAvaliableItems(final LibraryMember m) {
+	logger.info("About to check for available items");
 
-	final Collection<Item> availableItems = library.getAvailableItems(m);
-	return availableItems;
-
+	return library.applyMemberItemReport(m, SupportedService.AVAILABLE_ITEMS);
     }
 
     @Override
-    public Collection<LoanRecord> getOverdueItems(final LibraryMember m) {
+    public Collection<Item> getOverdueItems(final LibraryMember m) {
 	logger.info("About to check for overdue items");
 
-	return library.getOverdueItems(m);
+	return library.applyMemberItemReport(m, SupportedService.OVERDUE_ITEMS);
     }
 
     @Override
     public boolean requestCheckout(final LibraryMember m, final Item i) {
 	logger.info("About to check for availability for item {}", i);
-	final boolean checkoutSuccessful = library.checkout(i, m);
+	final boolean checkoutSuccessful = library.applyInventoryService(i, m, SupportedService.BORROW);
+
 	return checkoutSuccessful;
     }
 
     @Override
     public boolean returnItem(final LibraryMember m, final Item i) {
-	return library.returnItem(m, i);
+	return library.applyInventoryService(i, m, SupportedService.RETURN);
 
     }
 
