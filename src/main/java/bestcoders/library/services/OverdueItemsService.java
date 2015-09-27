@@ -28,6 +28,7 @@ public class OverdueItemsService implements LibraryInventoryReport {
 
     @Override
     public Collection<LoanRecord> apply() {
+	logger.info("About to check for overdue items out on loan");
 	final BusinessDate businessDate = library.getBusinessDate();
 	final Stream<LoanRecord> openLoans = libraryStreams.getOpenLoansStream();
 	final Stream<LoanRecord> overdueItems = openLoans

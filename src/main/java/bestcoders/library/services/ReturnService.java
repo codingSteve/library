@@ -19,18 +19,16 @@ public class ReturnService implements InventoryService {
 
     private static Logger logger = LoggerFactory.getLogger(ReturnService.class);
 
-    private final Library library;
-
     private final LibraryStreams libraryStreams;
 
     public ReturnService(final Library library) {
-	this.library = library;
 	libraryStreams = new LibraryStreams(library);
     }
 
     @Override
     public boolean apply(final LibraryMember m, final Item i) {
 
+	logger.info("About to return item {} from member", i.getId(), m.getMemberNumber());
 	final Stream<LoanRecord> openLoans = libraryStreams.getOpenLoansStream();
 	final Stream<LoanRecord> memberLoans = libraryStreams.getLoansForMember(openLoans, m);
 
