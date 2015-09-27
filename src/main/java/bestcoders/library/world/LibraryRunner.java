@@ -29,6 +29,8 @@ import bestcoders.library.members.LibraryMember;
 public class LibraryRunner {
     private static Logger logger = LoggerFactory.getLogger(LibraryRunner.class);
 
+    private static int memberCount = 1;
+
     public static void main(final String[] ARGV) throws IOException, InterruptedException {
 	final LibraryRunner world = new LibraryRunner();
 	world.loadInventoryFromCSV("./src/main/resources/inventory.csv");
@@ -105,13 +107,12 @@ public class LibraryRunner {
 
     private void registerMembers() {
 
-	final int memberCount = 10;
 	members = new ArrayList<LibraryMember>(memberCount);
 
 	final Collection<ItemType> justBooks = Arrays.asList(new ItemType[] { ItemType.BOOK });
 	final Collection<ItemType> booksAndDVDs = Arrays.asList(new ItemType[] { ItemType.BOOK, ItemType.DVD });
 
-	for (int i = 0; ++i < memberCount;) {
+	for (int i = 0; i++ < memberCount;) {
 	    final LibraryMember newMember = new LibraryMember(i, "Number " + i,
 		    (i % 2 == 1) ? justBooks : booksAndDVDs);
 	    logger.info("About to enrol a new member: {}", newMember);
@@ -134,7 +135,9 @@ public class LibraryRunner {
 		    currentItem = availableItems.stream().findAny();
 
 		    if (currentItem.isPresent()) {
-			frontDesk.requestCheckout(m, currentItem.get());
+			final Item item = currentItem.get();
+			logger.info("Member: {} about to checkout item : {}", m.getMemberNumber(), item);
+			frontDesk.requestCheckout(m, item);
 		    }
 
 		    final int days = rand.nextInt(9) + 1;
@@ -145,7 +148,9 @@ public class LibraryRunner {
 		    }
 
 		    if (currentItem.isPresent()) {
-			frontDesk.returnItem(m, currentItem.get());
+			final Item item = currentItem.get();
+			logger.info("Member: {} about to return item : {}", m.getMemberNumber(), item);
+			frontDesk.returnItem(m, item);
 		    }
 
 		}
