@@ -30,7 +30,7 @@ import bestcoders.library.members.LibraryMember;
 public class LibraryRunner {
     private static Logger logger = LoggerFactory.getLogger(LibraryRunner.class);
 
-    private static int memberCount = 1;
+    private static int memberCount = 3;
 
     public static void main(final String[] ARGV) throws IOException, InterruptedException {
 	final LibraryRunner world = new LibraryRunner();
@@ -148,6 +148,14 @@ public class LibraryRunner {
 			Thread.sleep(500 * days);
 		    } catch (final InterruptedException e) {
 
+		    }
+
+		    final Collection<Item> overdueItems = frontDesk.getOverdueItems(m);
+		    if (!overdueItems.isEmpty()) {
+			logger.error("Member: {} has overdue items!!  ", m.getMemberNumber());
+			for (final Item overdueItem : overdueItems) {
+			    logger.error("Member {} item {}", m, overdueItem);
+			}
 		    }
 
 		    if (currentItem.isPresent()) {

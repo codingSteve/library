@@ -12,10 +12,10 @@ public class LoanRecord implements Comparable<LoanRecord> {
     BusinessDate returnDate;
     LoanState state;
 
-    public LoanRecord(final Item i, final LibraryMember m) {
+    public LoanRecord(final Item i, final LibraryMember m, final BusinessDate checkoutDate) {
 	item = i;
 	member = m;
-	checkoutDate = BusinessDate.getCurrentDate();
+	this.checkoutDate = checkoutDate;
 	expectedReturnDate = checkoutDate.addDays(7);
 	state = LoanState.OPEN;
     }

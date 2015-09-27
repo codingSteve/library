@@ -32,7 +32,7 @@ public class OverdueItemsService implements LibraryInventoryReport {
 	final BusinessDate businessDate = library.getBusinessDate();
 	final Stream<LoanRecord> openLoans = libraryStreams.getOpenLoansStream();
 	final Stream<LoanRecord> overdueItems = openLoans
-		.filter(lr -> lr.getExpectedReturnDate().compareTo(businessDate) < 0);
+		.filter(lr -> -1 == lr.getExpectedReturnDate().compareTo(businessDate));
 
 	return overdueItems.collect(Collectors.toList());
     }

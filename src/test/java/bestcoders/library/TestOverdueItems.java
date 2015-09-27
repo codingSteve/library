@@ -59,6 +59,42 @@ public class TestOverdueItems {
     }
 
     @Test
+    public void testSomeNonOverdueLoans() {
+
+	final Calendar c = Calendar.getInstance();
+	c.setTime(new java.util.Date());
+
+	final BusinessDate moveableDate = new BusinessDate() {
+
+	    @Override
+	    public Date getDate() {
+		return c.getTime();
+	    }
+
+	};
+
+	final Library l = LibraryFactory.getLibrary(moveableDate, new Inventory());
+	final FrontDesk f = new SimpleFrontDesk(l);
+
+	final LibraryMember m = new LibraryMember(1, "Steve", Arrays.asList(new ItemType[] { ItemType.BOOK }));
+
+	final Optional<Item> b = f.findItemById(1);
+	assertTrue(b.isPresent());
+	final Item book = b.get();
+
+	final boolean checkoutSuceeded = f.requestCheckout(m, book);
+	assertTrue(checkoutSuceeded);
+
+	c.add(Calendar.DAY_OF_MONTH, 2);
+
+	final Collection<Item> overdueItems = f.getOverdueItems(m);
+	final int expectedResult = 0;
+	final int actualResult = overdueItems.size();
+	assertEquals(expectedResult, actualResult);
+
+    }
+
+    @Test
     public void testSomeOverDueLoans() {
 
 	final Calendar c = Calendar.getInstance();

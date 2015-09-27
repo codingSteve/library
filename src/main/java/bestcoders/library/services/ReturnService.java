@@ -6,7 +6,6 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import bestcoders.library.BusinessDate;
 import bestcoders.library.InventoryService;
 import bestcoders.library.Library;
 import bestcoders.library.items.Item;
@@ -21,7 +20,10 @@ public class ReturnService implements InventoryService {
 
     private final LibraryStreams libraryStreams;
 
+    private final Library library;
+
     public ReturnService(final Library library) {
+	this.library = library;
 	libraryStreams = new LibraryStreams(library);
     }
 
@@ -39,7 +41,7 @@ public class ReturnService implements InventoryService {
 	if (loanRecord.isPresent()) {
 	    logger.debug("Item: {} has been loaned to member: {}", i, m);
 	    final LoanRecord lr = loanRecord.get();
-	    lr.setReturnDate(BusinessDate.getCurrentDate());
+	    lr.setReturnDate(library.getBusinessDate());
 	    lr.setState(LoanState.CLOSED);
 
 	    op = true;

@@ -37,8 +37,12 @@ public class MemberOverdueItemsReport implements MemberItemReport {
 	final Stream<LoanRecord> openLoans = libraryStreams.getOpenLoansStream();
 	final Stream<LoanRecord> memberLoans = libraryStreams.getLoansForMember(openLoans, m);
 
-	final Stream<LoanRecord> overdueLoans = memberLoans
-		.filter(lr -> lr.getExpectedReturnDate().compareTo(businessDate) < 0);
+	final Stream<LoanRecord> overdueLoans = memberLoans.filter(lr -> {
+	    final BusinessDate expectedReturnDate = lr.getExpectedReturnDate();
+	    final BusinessDate currentDate = businessDate;
+
+	    return -1 == expectedReturnDate.compareTo(currentDate);
+	});
 
 	final Stream<Item> overdueItems = overdueLoans.map(lr -> lr.getItem());
 

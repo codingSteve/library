@@ -1,26 +1,26 @@
 package bestcoders.library.inventory;
 
-import bestcoders.library.BusinessDate;
+import java.util.Date;
+
 import bestcoders.library.items.Item;
 
 public class InventoryItem {
 
     final Item item;
     final int quantity;
-    final BusinessDate purchaseDate;
-    BusinessDate retirementDate;
+    final Long purchaseDate;
+    Long retirementDate;
 
     public InventoryItem(final Item item, final int quantity) {
 
-	this(item, quantity, BusinessDate.getCurrentDate());
+	this(item, quantity, new Date().getTime());
     }
 
-    public InventoryItem(final Item item, final int quantity, final BusinessDate purchaseDate) {
+    public InventoryItem(final Item item, final int quantity, final long purchaseDate) {
 	this(item, quantity, purchaseDate, null);
     }
 
-    public InventoryItem(final Item item, final int quantity, final BusinessDate purchaseDate,
-	    final BusinessDate retirementDate) {
+    public InventoryItem(final Item item, final int quantity, final long purchaseDate, final Long retirementDate) {
 	super();
 	this.item = item;
 	this.quantity = quantity;
@@ -36,7 +36,7 @@ public class InventoryItem {
 	return quantity;
     }
 
-    public BusinessDate getRetirementDate() {
+    public long getRetirementDate() {
 	return retirementDate;
     }
 

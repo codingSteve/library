@@ -9,7 +9,7 @@ import bestcoders.library.items.ItemType;
 public class LibraryFactory {
 
     public static Library getLibrary() {
-	final BusinessDate businessDate = BusinessDate.getCurrentDate();
+	final BusinessDate businessDate = new BusinessDate();
 	final Inventory inventory = new Inventory();
 	return getLibrary(businessDate, inventory);
 

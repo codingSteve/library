@@ -61,7 +61,7 @@ public class Library {
     }
 
     public void addLoanRecord(final Item i, final LibraryMember m) {
-	final LoanRecord l = new LoanRecord(i, m);
+	final LoanRecord l = new LoanRecord(i, m, businessDate);
 	loans.add(l);
 	logger.debug("We've recorded {} loan(s).", loans.size());
     }

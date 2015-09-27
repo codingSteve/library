@@ -2,18 +2,16 @@ package bestcoders.library;
 
 import java.util.Calendar;
 
-public abstract class BusinessDate implements Comparable<BusinessDate> {
+/**
+ * Simple wrapper around the date class. Users can extend and override behavior
+ * as needed for testing and more complex use cases
+ *
+ * @author stevenpowell
+ *
+ */
+public class BusinessDate implements Comparable<BusinessDate> {
 
-    public static BusinessDate getCurrentDate() {
-	final long today = new java.util.Date().getTime();
-
-	return new BusinessDate() {
-	    @Override
-	    public java.util.Date getDate() {
-		return new java.util.Date(today);
-	    }
-	};
-    }
+    private final java.util.Date d = new java.util.Date();
 
     public BusinessDate addDays(final int days) {
 	final Calendar c = Calendar.getInstance();
@@ -35,6 +33,8 @@ public abstract class BusinessDate implements Comparable<BusinessDate> {
 	return getDate().compareTo(o.getDate());
     }
 
-    public abstract java.util.Date getDate();
+    public java.util.Date getDate() {
+	return new java.util.Date();
+    }
 
 }
