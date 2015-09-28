@@ -33,7 +33,7 @@ public class ReturnService implements InventoryService {
 
 	logger.info("About to return item {} from member", i.getId(), m.getMemberNumber());
 	final Stream<LoanRecord> openLoans = libraryStreams.getOpenLoansStream();
-	final Stream<LoanRecord> memberLoans = libraryStreams.getLoansForMember(openLoans, m);
+	final Stream<LoanRecord> memberLoans = libraryStreams.getLoansForMember(openLoans, m); // TODO: add test for multiple loans per member. 
 
 	final Optional<LoanRecord> loanRecord = memberLoans.findFirst();
 
