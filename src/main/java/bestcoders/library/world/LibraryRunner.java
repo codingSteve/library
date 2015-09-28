@@ -1,5 +1,6 @@
 package bestcoders.library.world;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -43,7 +44,20 @@ public class LibraryRunner {
 
     public static void main(final String[] ARGV) throws IOException, InterruptedException {
 	final LibraryRunner world = new LibraryRunner();
-	world.loadInventoryFromCSV("./src/main/resources/inventory.csv");
+
+	if (ARGV.length != 0) {
+	    final String inventoryPathArg = ARGV[0];
+	    final File f = new File(inventoryPathArg);
+	    if (f.exists() && f.canRead()) {
+		world.loadInventoryFromCSV(inventoryPathArg);
+
+	    } else {
+		logger.error("Unable to access inventory at \"{}\", system exits", inventoryPathArg);
+		System.exit(-1);
+	    }
+	} else {
+	    world.loadInventoryFromCSV("./src/main/resources/inventory.csv");
+	}
 
 	world.registerMembers();
 
