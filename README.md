@@ -26,13 +26,15 @@ Running the application
  
 Maven is used for dependency management in this project and there are two options to exercise the behavior of the classes
  
- - Testing: There are some test cases in [./src/test][TESTDIR] which can be run as follows
+###Testing: 
+There are some test cases in [./src/test][TESTDIR] which can be run as follows
  
 ```
      mvn test
 ```     
      
-- Example usage:  There is a [library runner class][LRCLASS] which creates some members and a fake timer. The members interact with the library on a loop as follows:
+###Example usage:  
+There is a [library runner class][LRCLASS] which creates some members and a fake timer. The members interact with the library on a loop as follows:
 
 - Ask which items are available for them to borrow
 - Borrow one
