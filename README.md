@@ -28,8 +28,9 @@ Maven is used for dependency management in this project and there are two option
  
  - Testing: There are some test cases in [./src/test][TESTDIR] which can be run as follows
  
+```
      mvn test
-     
+```     
      
 - Example usage:  There is a library runner class which creates some members and a fake timer. The members interact with the library on a loop as follows:
 
@@ -39,7 +40,13 @@ Maven is used for dependency management in this project and there are two option
 - check for any overdue items (we would pay the fine here too if that was supported)
 - Return the item      
  
+```
      mvn exec:java 
+```
+
+
+
+
    
    [ITEM1]: https://github.com/codingSteve/library/issues/1
    [ITEM2]: https://github.com/codingSteve/library/issues/2
