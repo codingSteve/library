@@ -51,7 +51,18 @@ Core classes
 ------------
 
 ###Library
+Responsible for maintaining a record of which items were loaned to which member. 
 
+There are other services we expect a library to provide but they are covered by 'micro-service' classes. 
+
+###Member
+A very naïve member class with a collection of roles. The roles indicate which items the member can borrow from the library but provides and extension point for other services we need to add in the future, for example a children's library or a rare books reading room. 
+
+###Item
+This class represents a specific physical book, DVD or VHS Cassette which we can loan to a member. 
+
+###LoanRecord
+Provides a relationship between a member and the checkout of a specific item.  We log the checkout date and the expected return date on creation of the object. 
 
 
 
