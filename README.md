@@ -21,21 +21,17 @@ Basic functionality
    For example, if a book was due on 12th February and today is 15th February, that book should be flagged as overdue. 
 
  
- Running the application
- -----------------------
+Running the application
+-----------------------
  
- Maven is used for dependency management in this project and there are two options to exercise the behavior of the classes
+Maven is used for dependency management in this project and there are two options to exercise the behavior of the classes
  
- - Testing
- 
- There are some test cases in ./src/main/test which can be run as follows
+ - Testing: There are some test cases in [./src/test][TESTDIR] which can be run as follows
  
      mvn test
      
      
-- Example usage
-
-There is a library runner class which creates some members and a fake timer. The members interact with the library on a loop as follows:
+- Example usage:  There is a library runner class which creates some members and a fake timer. The members interact with the library on a loop as follows:
 
 - Ask which items are available for them to borrow
 - Borrow one
@@ -49,3 +45,4 @@ There is a library runner class which creates some members and a fake timer. The
    [ITEM2]: https://github.com/codingSteve/library/issues/2
    [ITEM3]: https://github.com/codingSteve/library/issues/3
    [ITEM4]: https://github.com/codingSteve/library/issues/4
+   [TESTDIR]: https://github.com/codingSteve/library/tree/master/src/test
