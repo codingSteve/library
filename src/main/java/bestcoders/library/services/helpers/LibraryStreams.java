@@ -16,7 +16,7 @@ public class LibraryStreams {
     }
 
     public Stream<LoanRecord> getLoansForMember(final Stream<LoanRecord> s, final LibraryMember m) {
-	return s.filter(lr -> lr.getMember().equals(m));
+	return s.filter(lr -> lr != null && lr.getMember().equals(m));
     }
 
     Stream<LoanRecord> getLoansStream() {
@@ -24,7 +24,7 @@ public class LibraryStreams {
     }
 
     public Stream<LoanRecord> getOpenLoansStream() {
-	return getLoansStream().filter(lr -> lr.getState() == LoanState.OPEN);
+	return getLoansStream().filter(lr -> lr != null && lr.getState() == LoanState.OPEN);
     }
 
 }
