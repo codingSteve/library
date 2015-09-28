@@ -32,7 +32,7 @@ Maven is used for dependency management in this project and there are two option
      mvn test
 ```     
      
-- Example usage:  There is a library runner class which creates some members and a fake timer. The members interact with the library on a loop as follows:
+- Example usage:  There is a [library runner class][LRCLASS] which creates some members and a fake timer. The members interact with the library on a loop as follows:
 
 - Ask which items are available for them to borrow
 - Borrow one
@@ -53,3 +53,4 @@ Maven is used for dependency management in this project and there are two option
    [ITEM3]: https://github.com/codingSteve/library/issues/3
    [ITEM4]: https://github.com/codingSteve/library/issues/4
    [TESTDIR]: https://github.com/codingSteve/library/tree/master/src/test
+   [LRCLASS]: https://github.com/codingSteve/library/blob/master/src/main/java/bestcoders/library/world/LibraryRunner.java
