@@ -139,6 +139,11 @@ public class LibraryRunner {
 
     }
 
+    //TODO: look at a member registry service. 
+    //To support separation of the 
+    //library the library should 
+    //know about its members which
+    //is currently not the case. 
     private void registerMembers() {
 
 	members = new ArrayList<LibraryMember>(memberCount);
@@ -165,8 +170,9 @@ public class LibraryRunner {
 	    public void run() {
 		for (int i = 0; ++i < 20;) {
 
+
 		    final Collection<Item> availableItems = library.applyMemberItemReport(m,
-			    SupportedService.AVAILABLE_ITEMS);
+			    SupportedService.AVAILABLE_ITEMS); // TODO: remove direct library access. Always go via our FrontDesk 
 		    currentItem = availableItems.stream().findAny();
 
 		    if (currentItem.isPresent()) {
