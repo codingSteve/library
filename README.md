@@ -24,7 +24,7 @@ Basic functionality
 Running the application
 -----------------------
  
-Maven is used for dependency management in this project and there are two options to exercise the behavior of the classes
+[Maven][MVNINST] is used for dependency management in this project and there are two options to exercise the behavior of the classes. 
  
 ###Testing: 
 There are some test cases in [./src/test][TESTDIR] which can be run as follows
@@ -65,6 +65,15 @@ This class represents a specific physical book, DVD or VHS Cassette which we can
 Provides a relationship between a member and the checkout of a specific item.  We log the checkout date and the expected return date on creation of the object. 
 
 
+###FrontDesk
+The front desk class provides a way for members to interact with the library. The Simple implementation currently in place provides some abstraction for the  clients wrapping the service calls in convenience methods. The next phase of development will add the ability to separate the Library instance from the members by providing a restful API for the FrontDesk to call. 
+
+Further improvements and features
+---------------------------------
+
+See the [github issues log][ALLISSUES] for details of outstanding features and improvements. 
+
+
 
    
    [ITEM1]: https://github.com/codingSteve/library/issues/1
@@ -73,3 +82,5 @@ Provides a relationship between a member and the checkout of a specific item.  W
    [ITEM4]: https://github.com/codingSteve/library/issues/4
    [TESTDIR]: https://github.com/codingSteve/library/tree/master/src/test
    [LRCLASS]: https://github.com/codingSteve/library/blob/master/src/main/java/bestcoders/library/world/LibraryRunner.java
+   [ALLISSUES]: https://github.com/codingSteve/library/issues
+   [MVNINST]: https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
