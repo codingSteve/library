@@ -62,6 +62,8 @@ public class Library {
 
     public void addLoanRecord(final Item i, final LibraryMember m) {
 	final LoanRecord l = new LoanRecord(i, m, businessDate);
+   // TODO: review for NULLs here. 
+   // https://github.com/codingSteve/library/issues/11
 	loans.add(l);
 	logger.debug("We've recorded {} loan(s).", loans.size());
     }
