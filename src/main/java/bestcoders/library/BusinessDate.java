@@ -7,6 +7,7 @@ import java.util.Calendar;
  * as needed for testing and more complex use cases
  *
  * @author stevenpowell
+ * @see https://github.com/codingSteve/library/issues/10
  *
  */
 public class BusinessDate implements Comparable<BusinessDate> {
