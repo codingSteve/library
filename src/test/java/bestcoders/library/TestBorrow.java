@@ -43,4 +43,29 @@ public class TestBorrow {
 
     }
 
+    @Test
+    public void testTwoBorrows() {
+	final List<ItemType> types = Arrays.asList(new ItemType[] { ItemType.BOOK });
+
+	final Library library = LibraryFactory.getLibrary();
+
+	final LibraryMember m = new LibraryMember(1, "Steve", types);
+	final FrontDesk d = new SimpleFrontDesk(library);
+
+	for (int i = 0; ++i < 3;) {
+	    logger.info("About to request checkout of item id == {}", i);
+	    final Optional<Item> b = d.findItemById(1);
+	    assertTrue(b.isPresent());
+
+	    final Item book = b.get();
+	    logger.info("Found item == {}", book);
+
+	    final boolean actualResult = d.requestCheckout(m, book);
+	    final boolean expectedResult = true;
+
+	    assertEquals(expectedResult, actualResult);
+
+	}
+
+    }
 }
