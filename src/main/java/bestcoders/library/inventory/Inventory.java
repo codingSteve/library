@@ -17,6 +17,7 @@ public class Inventory {
 
     public void addToInventory(final Item item, final int quantity) {
 	logger.debug("About to add {} new {}(s)", quantity, item);
+	// synchronisation needed
 	inventoryItems.add(new InventoryItem(item, quantity));
     }
 

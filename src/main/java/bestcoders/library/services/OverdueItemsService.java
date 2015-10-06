@@ -21,6 +21,7 @@ public class OverdueItemsService implements LibraryInventoryReport {
 
     private final LibraryStreams libraryStreams;
 
+    // TODO: review for reuse in member service 
     public OverdueItemsService(final Library library) {
 	this.library = library;
 	libraryStreams = new LibraryStreams(library);

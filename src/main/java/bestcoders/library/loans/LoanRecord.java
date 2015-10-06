@@ -16,7 +16,7 @@ public class LoanRecord implements Comparable<LoanRecord> {
 	item = i;
 	member = m;
 	this.checkoutDate = checkoutDate.addDays(0);
-	expectedReturnDate = checkoutDate.addDays(7);
+	expectedReturnDate = checkoutDate.addDays(7); //TODO: add default loan period per item type 
 	state = LoanState.OPEN;
     }
 
