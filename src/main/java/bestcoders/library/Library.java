@@ -62,8 +62,7 @@ public class Library {
 
     public void addLoanRecord(final Item i, final LibraryMember m) {
 	final LoanRecord l = new LoanRecord(i, m, businessDate);
-   // TODO: review for NULLs here. 
-   // https://github.com/codingSteve/library/issues/11
+
 	loans.add(l);
 	logger.debug("We've recorded {} loan(s).", loans.size());
     }
@@ -99,7 +98,7 @@ public class Library {
     }
 
     public BusinessDate getBusinessDate() {
-	return businessDate;// TODO: review here for immutability 
+	return businessDate.addDays(0);
     }
 
     public Optional<Item> getItemById(final int i) {
