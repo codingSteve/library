@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import bestcoders.library.items.ItemType;
 
+//TODO: should only be available for instantiations by the Library class  
 public class LibraryMember {
     private static Logger logger = LoggerFactory.getLogger(LibraryMember.class);
 

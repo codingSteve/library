@@ -3,6 +3,7 @@ package bestcoders.library.items;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+//TODO: add identifiers collection
 public class Item {
     private static Logger logger = LoggerFactory.getLogger(Item.class);
 
