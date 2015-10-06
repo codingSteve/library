@@ -47,7 +47,7 @@ public class LibraryMember {
     }
 
     @Override
-    public String toString() {
+    public String toString() { // TODO : review for string builder
 	return "{memberNumber : " + memberNumber + ", memberName : \"" + memberName + "\"}";
     }
 }
