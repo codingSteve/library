@@ -33,16 +33,17 @@ public class ReturnService implements InventoryService {
 
 	logger.info("About to return item {} from member", i.getId(), m.getMemberNumber());
 	final Stream<LoanRecord> openLoans = libraryStreams.getOpenLoansStream();
-	final Stream<LoanRecord> memberLoans = libraryStreams.getLoansForMember(openLoans, m); // TODO: add test for multiple loans per member. 
+	final Stream<LoanRecord> memberLoans = libraryStreams.getLoansForMember(openLoans, m);
+	final Stream<LoanRecord> memberLoansForItem = memberLoans.filter(l -> l.getItem().equals(i));
 
-	final Optional<LoanRecord> loanRecord = memberLoans.findFirst();
+	final Optional<LoanRecord> loanRecord = memberLoansForItem.findFirst();
 
 	final boolean op;
 
 	if (loanRecord.isPresent()) {
 	    logger.debug("Item: {} has been loaned to member: {}", i, m);
 	    final LoanRecord lr = loanRecord.get();
-	    final BusinessDate currentDate = library.getBusinessDate().addDays(0);
+	    final BusinessDate currentDate = library.getBusinessDate();
 	    logger.info("About to set return date to {} for lr {}  ", currentDate, lr);
 	    lr.setReturnDate(currentDate);
 	    lr.setState(LoanState.CLOSED);
