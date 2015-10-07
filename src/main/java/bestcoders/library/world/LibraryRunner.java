@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 
 import bestcoders.library.BusinessDate;
 import bestcoders.library.Library;
-import bestcoders.library.SupportedService;
 import bestcoders.library.frontdesk.FrontDesk;
 import bestcoders.library.frontdesk.SimpleFrontDesk;
 import bestcoders.library.inventory.Inventory;
@@ -139,11 +138,11 @@ public class LibraryRunner {
 
     }
 
-    //TODO: look at a member registry service. 
-    //To support separation of the 
-    //library the library should 
-    //know about its members which
-    //is currently not the case. 
+    // TODO: look at a member registry service.
+    // To support separation of the
+    // library the library should
+    // know about its members which
+    // is currently not the case.
     private void registerMembers() {
 
 	members = new ArrayList<LibraryMember>(memberCount);
@@ -170,9 +169,7 @@ public class LibraryRunner {
 	    public void run() {
 		for (int i = 0; ++i < 20;) {
 
-
-		    final Collection<Item> availableItems = library.applyMemberItemReport(m,
-			    SupportedService.AVAILABLE_ITEMS); // TODO: remove direct library access. Always go via our FrontDesk 
+		    final Collection<Item> availableItems = frontDesk.getAvaliableItems(m);
 		    currentItem = availableItems.stream().findAny();
 
 		    if (currentItem.isPresent()) {

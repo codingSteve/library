@@ -49,6 +49,15 @@ public class LibraryMember {
 
     @Override
     public String toString() {
+	// javac optimises out the string concatenations to StringBuilder calls.
+	// > javap -c LibraryMember.class 
+	// ... 
+	// 81        9: aload_0
+	// 82       10: getfield      #33                 // Field memberNumber:I
+	// 83       13: invokevirtual #74                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+	// 84       16: ldc           #78                 // String , memberName : \"
+	// 85       18: invokevirtual #80                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
 	return "{memberNumber : " + memberNumber + ", memberName : \"" + memberName + "\"}";
+
     }
 }

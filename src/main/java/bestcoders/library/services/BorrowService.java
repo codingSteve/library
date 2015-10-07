@@ -33,8 +33,7 @@ public class BorrowService implements InventoryService {
 	return isAvailable;
     }
 
-    // TODO: why public? 
-    public int getStockAvailable(final Item i, final LibraryMember m) {
+    private int getStockAvailable(final Item i, final LibraryMember m) {
 	logger.info("About to check for availability of {}", i);
 
 	final int copiesAvailable;
