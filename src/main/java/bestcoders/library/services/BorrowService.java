@@ -37,6 +37,7 @@ public class BorrowService implements InventoryService {
 	logger.info("About to check for availability of {}", i);
 
 	final int copiesAvailable;
+    //TODO: look at open loans and sum 
 	final Optional<InventoryItem> totalInventory = library.getPermittedItemsStreamByMember(m)
 		.filter(invItem -> invItem.getItem().equals(i)).findAny();
 
