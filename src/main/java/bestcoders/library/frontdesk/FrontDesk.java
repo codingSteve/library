@@ -13,7 +13,7 @@ import bestcoders.library.members.LibraryMember;
  * @author stevenpowell
  *
  */
-public interface FrontDesk {
+public interface FrontDesk { //TODO: consider using this (?) interface for library too. Would require heavy refactoring but may provide cleaner extensibility 
     /**
      * Support for searching the library for a specific item.
      *
