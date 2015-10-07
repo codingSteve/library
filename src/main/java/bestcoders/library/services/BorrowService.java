@@ -1,6 +1,7 @@
 package bestcoders.library.services;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,9 @@ import bestcoders.library.InventoryService;
 import bestcoders.library.Library;
 import bestcoders.library.inventory.InventoryItem;
 import bestcoders.library.items.Item;
+import bestcoders.library.loans.LoanRecord;
 import bestcoders.library.members.LibraryMember;
+import bestcoders.library.services.helpers.LibraryStreams;
 
 public class BorrowService implements InventoryService {
 
@@ -17,8 +20,11 @@ public class BorrowService implements InventoryService {
 
     private final Library library;
 
+    private final LibraryStreams libraryStreams;
+
     public BorrowService(final Library library) {
 	this.library = library;
+	libraryStreams = new LibraryStreams(library);
     }
 
     @Override
@@ -33,17 +39,19 @@ public class BorrowService implements InventoryService {
 	return isAvailable;
     }
 
-    private int getStockAvailable(final Item i, final LibraryMember m) {
+    private long getStockAvailable(final Item i, final LibraryMember m) {
 	logger.info("About to check for availability of {}", i);
 
-	final int copiesAvailable;
-    //TODO: look at open loans and sum 
+	final long copiesAvailable;
 	final Optional<InventoryItem> totalInventory = library.getPermittedItemsStreamByMember(m)
 		.filter(invItem -> invItem.getItem().equals(i)).findAny();
 
 	if (totalInventory.isPresent()) {
 	    final InventoryItem ii = totalInventory.get();
-	    copiesAvailable = ii.getQuantity();
+	    final Stream<LoanRecord> openLoans = libraryStreams.getOpenLoansStream();
+	    final long copiesOnLoan = openLoans.filter(lr -> lr.getItem().equals(i)).count();
+
+	    copiesAvailable = ii.getQuantity() - copiesOnLoan;
 	} else {
 	    copiesAvailable = 0;
 	}
